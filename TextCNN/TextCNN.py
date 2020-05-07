@@ -144,9 +144,9 @@ class TextCNN(tf.keras.Model):
 import numpy as np
 import pandas as pd
 
-train_df = pd.read_csv("../data/cnews/train.tsv", header=None, names=['label', 'content'])
-val_df = pd.read_csv("../data/cnews/train.tsv", header=None, names=['label', 'content'])
-test_df = pd.read_csv("../data/cnews/train.tsv", header=None, names=['label', 'content'])
+# train_df = pd.read_csv("../data/cnews/train.tsv", header=None, names=['label', 'content'])
+# val_df = pd.read_csv("../data/cnews/train.tsv", header=None, names=['label', 'content'])
+# test_df = pd.read_csv("../data/cnews/train.tsv", header=None, names=['label', 'content'])
 
 data_x = np.array(["你好 我好 大家 好", "你好 我好 大家 好", "你好 我好 大家 好 好 好 好 好 好 好 好 好 好 好 好 好"]).reshape((-1, 1))
 data_y = np.array([0, 1, 2]).reshape((-1, 1))
