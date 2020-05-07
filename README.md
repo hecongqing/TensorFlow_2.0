@@ -7,7 +7,7 @@ Tensorflow==2.0.0
 ```
 
 ## TextCNN
-仅用mock数据运行，还在正式数据下运行。
+仅用mock数据运行，还未在正式数据下运行。
 ```bash
 python  TextCNN.py
 ```
