@@ -162,7 +162,7 @@ model.summary()
 tf.saved_model.save(model, './save_models/textcnn1/')
 infer_model = tf.saved_model.load('./save_models/textcnn1/')
 infer = infer_model.signatures["serving_default"]
-print(infer(tf.constant([['你好 我好 大家 好'],['你好 我好 大家 好']])))
+print(infer(tf.constant([['你好 我好 大家 好'], ['你好 我好 大家 好']])))
 
 # tf.keras.models.save_model(model, './save_models/textcnn1/', save_format="tf")
 # model_new = tf.keras.models.load_model('./save_models/textcnn1/')
