@@ -5,8 +5,27 @@
 =======
 # Table of contents
 
-* [TensorFlow\_2.0](README.md)
+* [Tensorflow\_2.0](README.md)
+
 * [第一章 Tensorflow初探](chapter_1.md)
-* [Untitled](untitled.md)
->>>>>>> 37b059bebf5016fb2ae99c7c4c77dc3027924a37
+
+* [第二章 Tensorflow初探](chapter_1.md)
+
+* [第三章 Tensorflow初探](chapter_1.md)
+
+* [第四章 Tensorflow初探](chapter_1.md)
+
+* [第五章 卷积神经网络](chapter_1.md)
+
+* [第六章 循环神经网络](chapter_1.md)
+
+* [第七章 遇见Transorformer](chapter_1.md)
+
+* [第八章 tf.hub初探](chapter_1.md)
+
+* [第九章 Tensorflow部署](chapter_1.md)
+
+* [第九章 王者Tensorflow](chapter_1.md)
+
+  
 
