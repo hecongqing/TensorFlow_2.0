@@ -9,6 +9,11 @@
 
 * [第一章 Tensorflow初探](chapter_1.md)
 
+  * [1.1 Tensorflow简介](chapter_1.md)
+  * [1.2 Tensorflow安装](chapter_1.md)
+    * [1.2.1 Windows下安装](chapter_1.md)
+    * [1.2.2Ubuntu下安装](chapter_1.md)
+
 * [第二章 Tensorflow初探](chapter_1.md)
 
 * [第三章 Tensorflow初探](chapter_1.md)
