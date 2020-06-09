@@ -695,7 +695,97 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h3 id="&#x5F20;&#x91CF;">&#x5F20;&#x91CF;</h3>
+<p>TensorFlow&#x4F7F;&#x7528;&#x4E00;&#x79CD;&#x53EB;&#x5F20;&#x91CF;(tensor)&#x7684;&#x6570;&#x636E;&#x7ED3;&#x6784;&#x53BB;&#x5B9A;&#x4E49;&#x6240;&#x6709;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x628A; tensor &#x770B;&#x6210;&#x662F; n &#x7EF4;&#x7684; array &#x6216;&#x8005; list&#x3002;&#x5728; TensorFlow &#x7684;&#x5404;&#x90E8;&#x5206;&#x56FE;&#x5F62;&#x95F4;&#x6D41;&#x52A8;&#x4F20;&#x9012;&#x7684;&#x53EA;&#x80FD;&#x662F;tensor&#x3002;</p>
+<p>&#x7F16;&#x5199;TensorFlow&#x7A0B;&#x5E8F;&#x65F6;&#xFF0C;&#x64CD;&#x7EB5;&#x5E76;&#x4F20;&#x9012;&#x7684;&#x4E3B;&#x8981;&#x5BF9;&#x8C61;&#x662F;tf.Tensor:</p>
+<ul>
+<li>&#x4E00;&#x4E2A;&#x6570;&#x636E;&#x7C7B;&#x578B;&#xFF08;&#x4F8B;&#x5982; float32&#xFF0C;int32&#xFF0C;&#x6216;string&#xFF09;</li>
+<li>&#x4EE5;&#x53CA;shape</li>
+</ul>
+<h3 id="arraynumpy&#x548C;tensortensorflow&#x5BF9;&#x6BD4;">array(numpy)&#x548C;Tensor(Tensorflow)&#x5BF9;&#x6BD4;</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Numpy</strong></th>
+<th><strong>TensorFlow</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a =  np.zeros((2,2));  b = np.ones((2,2))</td>
+<td>a =  tf.zeros((2,2));  b = tf.ones((2,2))</td>
+</tr>
+<tr>
+<td>np.sum(b,axis=1)</td>
+<td>tf.reduce_sum(a,axis=1)</td>
+</tr>
+<tr>
+<td>a.shape</td>
+<td>a.get_shape()</td>
+</tr>
+<tr>
+<td>np.reshape(a,(1,4))</td>
+<td>tf.reshape(a,(1,4))</td>
+</tr>
+<tr>
+<td>b*5+1</td>
+<td>b*5+1</td>
+</tr>
+<tr>
+<td>np.dot(a,b)</td>
+<td>tf.matmul(a,b)</td>
+</tr>
+<tr>
+<td>a[0,0];  a[:,0]; a[0,:]</td>
+<td>a[0,0];  a[:,0]; a[0,:]</td>
+</tr>
+</tbody>
+</table>
+<h2 id="&#x64CD;&#x4F5C;">&#x64CD;&#x4F5C;</h2>
+<ul>
+<li>tf.strings (&#x5E38;&#x7528;&#x4E8E;<strong>&#x63A8;&#x8350;&#x7B97;&#x6CD5;&#x573A;&#x666F;&#x3001;**</strong>NLP&#x573A;&#x666F;**)</li>
+<li>tf.debugging</li>
+<li>tf.dtypes</li>
+<li>tf.math</li>
+<li>tf.random</li>
+<li><a href="https://www.tensorflow.org/tutorials/structured_data/feature_columns" target="_blank">tf.feature_column</a> (&#x5E38;&#x7528;&#x4E8E;&#x7ED3;&#x6784;&#x5316;&#x6570;&#x636E;&#x7279;&#x5F81;&#x5904;&#x7406;)</li>
+</ul>
+<h4 id="tfstrings">tf.strings</h4>
+<pre><code class="lang-python"><span class="hljs-comment">#&#x5B57;&#x7B26;&#x5207;&#x5272;</span>
+tf.strings.bytes_split(<span class="hljs-string">&apos;hello&apos;</span>)
+</code></pre>
+<pre><code class="lang-python"><span class="hljs-comment">#&#x5355;&#x8BCD;&#x5207;&#x5272;</span>
+tf.strings.split(<span class="hljs-string">&apos;hello world&apos;</span>)
+</code></pre>
+<pre><code class="lang-python"><span class="hljs-comment">#string hash</span>
+tf.strings.to_hash_bucket([<span class="hljs-string">&apos;hello&apos;</span>,<span class="hljs-string">&apos;world&apos;</span>], num_buckets=<span class="hljs-number">10</span>)
+</code></pre>
+<h4 id="tfdebugging">tf.debugging</h4>
+<pre><code class="lang-python"><span class="hljs-comment">#tf&#x81EA;&#x5E26;debug&#x51FD;&#x6570;</span>
+a=tf.random.uniform((<span class="hljs-number">10</span>,<span class="hljs-number">10</span>))
+tf.debugging.assert_equal(x=a.shape,y=(<span class="hljs-number">10</span>,<span class="hljs-number">10</span>))
+</code></pre>
+<pre><code class="lang-python"><span class="hljs-comment">#&#x9519;&#x8BEF;&#x793A;&#x8303;</span>
+tf.debugging.assert_equal(x=a.shape,y=(<span class="hljs-number">20</span>,<span class="hljs-number">10</span>))
+</code></pre>
+<h4 id="tfrandom">tf.random</h4>
+<pre><code class="lang-python">a = tf.random.uniform(shape=(<span class="hljs-number">10</span>,<span class="hljs-number">5</span>),minval=<span class="hljs-number">0</span>,maxval=<span class="hljs-number">10</span>)
+</code></pre>
+<h4 id="tfmath">tf.math</h4>
+<pre><code class="lang-python">a = tf.constant([[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]])
+b = tf.constant([[<span class="hljs-number">5</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">7</span>,<span class="hljs-number">8</span>]])
+
+tf.print(tf.math.add(a,b))
+tf.print(tf.math.subtract(a,b))
+tf.print(tf.math.multiply(a,b))
+tf.print(tf.math.divide(a,b))
+</code></pre>
+<h4 id="tfdtypes">tf.dtypes</h4>
+<pre><code class="lang-python">x =tf.constant([<span class="hljs-number">1.8</span>,<span class="hljs-number">2.2</span>],dtype=tf.float32)
+
+x1=tf.dtypes.cast(x,tf.int32)
+</code></pre>
+
                                 
                                 </section>
                             
@@ -734,7 +824,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"2.1 张量与操作","level":"1.3.1","depth":2,"next":{"title":"2.2 三种定义模型方式","level":"1.3.2","depth":2,"path":"ch2/三种建模方式.md","ref":"ch2/三种建模方式.md","articles":[]},"previous":{"title":"第二章 初识Tensorflow","level":"1.3","depth":1,"ref":"","articles":[{"title":"2.1 张量与操作","level":"1.3.1","depth":2,"path":"ch2/张量与操作.md","ref":"ch2/张量与操作.md","articles":[]},{"title":"2.2 三种定义模型方式","level":"1.3.2","depth":2,"path":"ch2/三种建模方式.md","ref":"ch2/三种建模方式.md","articles":[]},{"title":"2.3 两种模型训练方式","level":"1.3.3","depth":2,"path":"ch2/模型训练.md","ref":"ch2/模型训练.md","articles":[]},{"title":"2.4 计算图机制","level":"1.3.4","depth":2,"path":"ch2/计算图机制.md","ref":"ch2/计算图机制.md","articles":[]},{"title":"2.5 模型保存与加载","level":"1.3.5","depth":2,"path":"ch2/模型保存与加载.md","ref":"ch2/模型保存与加载.md","articles":[]},{"title":"注意","level":"1.3.6","depth":2,"path":"ch2/注意.md","ref":"ch2/注意.md","articles":[]},{"title":"相关bug详解","level":"1.3.7","depth":2,"path":"ch2/注意.md","ref":"ch2/注意.md","articles":[]}]},"dir":"neutral"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ch2/张量与操作.md","mtime":"2020-06-03T04:59:58.482Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-04T04:45:29.615Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"2.1 张量与操作","level":"1.3.1","depth":2,"next":{"title":"2.2 三种定义模型方式","level":"1.3.2","depth":2,"path":"ch2/三种建模方式.md","ref":"ch2/三种建模方式.md","articles":[]},"previous":{"title":"第二章 初识Tensorflow","level":"1.3","depth":1,"ref":"","articles":[{"title":"2.1 张量与操作","level":"1.3.1","depth":2,"path":"ch2/张量与操作.md","ref":"ch2/张量与操作.md","articles":[]},{"title":"2.2 三种定义模型方式","level":"1.3.2","depth":2,"path":"ch2/三种建模方式.md","ref":"ch2/三种建模方式.md","articles":[]},{"title":"2.3 两种模型训练方式","level":"1.3.3","depth":2,"path":"ch2/模型训练.md","ref":"ch2/模型训练.md","articles":[]},{"title":"2.4 计算图机制","level":"1.3.4","depth":2,"path":"ch2/计算图机制.md","ref":"ch2/计算图机制.md","articles":[]},{"title":"2.5 模型保存与加载","level":"1.3.5","depth":2,"path":"ch2/模型保存与加载.md","ref":"ch2/模型保存与加载.md","articles":[]},{"title":"注意","level":"1.3.6","depth":2,"path":"ch2/注意.md","ref":"ch2/注意.md","articles":[]},{"title":"相关bug详解","level":"1.3.7","depth":2,"path":"ch2/注意.md","ref":"ch2/注意.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ch2/张量与操作.md","mtime":"2020-06-04T05:15:43.980Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-09T04:42:12.640Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
