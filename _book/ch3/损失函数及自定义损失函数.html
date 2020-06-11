@@ -702,16 +702,12 @@
     name=<span class="hljs-string">&apos;binary_crossentropy&apos;</span>
 )
 </code></pre>
-<pre><code class="lang-from_logits```&#x7684;&#x4F5C;&#x7528;&#xFF1A;&#x6A21;&#x578B;&#x7684;&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#x6CA1;&#x6709;&#x901A;&#x8FC7;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#x65F6;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x4F7F;&#x5F97;```from_logits=True```&#xFF1B;&#x53CD;&#x4E4B;&#xFF0C;&#x5982;&#x679C;&#x6A21;&#x578B;&#x7684;&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#x901A;&#x8FC7;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#x540E;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x4F7F;&#x5F97;```from_logits=False```&#x3002;">
-&#x539F;&#x7406;&#x662F;&#x4EC0;&#x4E48;&#x5462;&#xFF1F;&#x5F53;&#x4F60;&#x6253;&#x5F00;tensorflow&#x7684;&#x6E90;&#x7801;&#x65F6;&#xFF0C;&#x4E00;&#x5207;&#x90FD;&#x660E;&#x767D;&#x4E86;&#xFF01;
-
-&#x4E0B;&#x9762;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x6765;&#x6E90;&#x4E8E;https://github.com/tensorflow/tensorflow/blob/64c3d382cadf7bbe8e7e99884bede8284ff67f56/tensorflow/python/keras/backend.py#L4559
-
-```if not from_logits:```&#x8FD9;&#x4E2A;&#x5224;&#x65AD;&#x8BED;&#x53E5;&#x540E;&#xFF0C;&#x5219;&#x4F1A;&#x76F4;&#x63A5;&#x9636;&#x6BB5;bce (binary_crossentropy)&#xFF1B;&#x53CD;&#x4E4B;&#xFF0C;&#x5219;&#x4F1A;&#x8BA1;&#x7B97;```nn.sigmoid_cross_entropy_with_logits```&#x3002;
-
-```python
-def binary_crossentropy(target, output, from_logits=False):
-  &quot;&quot;&quot;Binary crossentropy between an output tensor and a target tensor.
+<p>&#x53C2;&#x6570;<code>from_logits</code>&#x7684;&#x4F5C;&#x7528;&#xFF1A;&#x6A21;&#x578B;&#x7684;&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#x6CA1;&#x6709;&#x901A;&#x8FC7;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#x65F6;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x4F7F;&#x5F97;<code>from_logits=True</code>&#xFF1B;&#x53CD;&#x4E4B;&#xFF0C;&#x5982;&#x679C;&#x6A21;&#x578B;&#x7684;&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#x901A;&#x8FC7;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#x540E;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x4F7F;&#x5F97;<code>from_logits=False</code>&#x3002;</p>
+<p>&#x539F;&#x7406;&#x662F;&#x4EC0;&#x4E48;&#x5462;&#xFF1F;&#x5F53;&#x4F60;&#x6253;&#x5F00;tensorflow&#x7684;&#x6E90;&#x7801;&#x65F6;&#xFF0C;&#x4E00;&#x5207;&#x90FD;&#x660E;&#x767D;&#x4E86;&#xFF01;</p>
+<p>&#x4E0B;&#x9762;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x6765;&#x6E90;&#x4E8E;<a href="https://github.com/tensorflow/tensorflow/blob/64c3d382cadf7bbe8e7e99884bede8284ff67f56/tensorflow/python/keras/backend.py#L4559" target="_blank">https://github.com/tensorflow/tensorflow/blob/64c3d382cadf7bbe8e7e99884bede8284ff67f56/tensorflow/python/keras/backend.py#L4559</a></p>
+<p><code>if not from_logits:</code>&#x8FD9;&#x4E2A;&#x5224;&#x65AD;&#x8BED;&#x53E5;&#x540E;&#xFF0C;&#x5219;&#x4F1A;&#x76F4;&#x63A5;&#x9636;&#x6BB5;bce (binary_crossentropy)&#xFF1B;&#x53CD;&#x4E4B;&#xFF0C;&#x5219;&#x4F1A;&#x8BA1;&#x7B97;<code>nn.sigmoid_cross_entropy_with_logits</code>&#x3002;</p>
+<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">binary_crossentropy</span><span class="hljs-params">(target, output, from_logits=False)</span>:</span>
+  <span class="hljs-string">&quot;&quot;&quot;Binary crossentropy between an output tensor and a target tensor.
   Arguments:
       target: A tensor with the same shape as `output`.
       output: A tensor.
@@ -720,24 +716,24 @@ def binary_crossentropy(target, output, from_logits=False):
           encodes a probability distribution.
   Returns:
       A tensor.
-  &quot;&quot;&quot;
-  if not from_logits:
-    if (isinstance(output, (ops.EagerTensor, variables_module.Variable)) or
-        output.op.type != &apos;Sigmoid&apos;):
+  &quot;&quot;&quot;</span>
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> from_logits:
+    <span class="hljs-keyword">if</span> (isinstance(output, (ops.EagerTensor, variables_module.Variable)) <span class="hljs-keyword">or</span>
+        output.op.type != <span class="hljs-string">&apos;Sigmoid&apos;</span>):
       epsilon_ = _constant_to_tensor(epsilon(), output.dtype.base_dtype)
-      output = clip_ops.clip_by_value(output, epsilon_, 1. - epsilon_)
+      output = clip_ops.clip_by_value(output, epsilon_, <span class="hljs-number">1.</span> - epsilon_)
 
-      # Compute cross entropy from probabilities.
+      <span class="hljs-comment"># Compute cross entropy from probabilities.</span>
       bce = target * math_ops.log(output + epsilon())
-      bce += (1 - target) * math_ops.log(1 - output + epsilon())
-      return -bce
-    else:
-      # When sigmoid activation function is used for output operation, we
-      # use logits from the sigmoid function directly to compute loss in order
-      # to prevent collapsing zero when training.
-      assert len(output.op.inputs) == 1
-      output = output.op.inputs[0]
-  return nn.sigmoid_cross_entropy_with_logits(labels=target, logits=output)
+      bce += (<span class="hljs-number">1</span> - target) * math_ops.log(<span class="hljs-number">1</span> - output + epsilon())
+      <span class="hljs-keyword">return</span> -bce
+    <span class="hljs-keyword">else</span>:
+      <span class="hljs-comment"># When sigmoid activation function is used for output operation, we</span>
+      <span class="hljs-comment"># use logits from the sigmoid function directly to compute loss in order</span>
+      <span class="hljs-comment"># to prevent collapsing zero when training.</span>
+      <span class="hljs-keyword">assert</span> len(output.op.inputs) == <span class="hljs-number">1</span>
+      output = output.op.inputs[<span class="hljs-number">0</span>]
+  <span class="hljs-keyword">return</span> nn.sigmoid_cross_entropy_with_logits(labels=target, logits=output)
 </code></pre>
 <p>&#x4E0B;&#x9762;&#x6211;&#x4EEC;&#x518D;&#x5206;&#x6790;&#x4E0B;<code>nn.sigmoid_cross_entropy_with_logits</code>:</p>
 <p>&#x4E0B;&#x9762;&#x4EE3;&#x7801;&#x6765;&#x6E90;&#x4E8E; <a href="https://github.com/tensorflow/tensorflow/blob/64c3d382cadf7bbe8e7e99884bede8284ff67f56/tensorflow/python/ops/nn_impl.py#L112" target="_blank">https://github.com/tensorflow/tensorflow/blob/64c3d382cadf7bbe8e7e99884bede8284ff67f56/tensorflow/python/ops/nn_impl.py#L112</a></p>
@@ -868,7 +864,7 @@ def binary_crossentropy(target, output, from_logits=False):
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"3.2 损失函数及自定义损失函数","level":"1.4.2","depth":2,"next":{"title":"3.3 优化器及自定义优化器","level":"1.4.3","depth":2,"path":"ch3/优化器及自定义优化器.md","ref":"ch3/优化器及自定义优化器.md","articles":[]},"previous":{"title":"3.1 自定义模型层","level":"1.4.1","depth":2,"path":"ch3/自定义模型层.md","ref":"ch3/自定义模型层.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"hecongqing","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Tensorflow 2.0实战笔记","language":"zh-hans","output.name":"site","gitbook":"3.2.3","description":"记录Tensorflow 2.0遇到的坑"},"file":{"path":"ch3/损失函数及自定义损失函数.md","mtime":"2020-06-11T04:44:31.792Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-11T05:30:47.481Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"3.2 损失函数及自定义损失函数","level":"1.4.2","depth":2,"next":{"title":"3.3 优化器及自定义优化器","level":"1.4.3","depth":2,"path":"ch3/优化器及自定义优化器.md","ref":"ch3/优化器及自定义优化器.md","articles":[]},"previous":{"title":"3.1 自定义模型层","level":"1.4.1","depth":2,"path":"ch3/自定义模型层.md","ref":"ch3/自定义模型层.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":".","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"hecongqing","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Tensorflow 2.0实战笔记","language":"zh-hans","output.name":"site","gitbook":"3.2.3","description":"记录Tensorflow 2.0遇到的坑"},"file":{"path":"ch3/损失函数及自定义损失函数.md","mtime":"2020-06-11T05:35:16.888Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-11T05:38:20.499Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
