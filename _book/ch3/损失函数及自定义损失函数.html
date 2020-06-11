@@ -697,7 +697,135 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <pre><code class="lang-python">tf.keras.losses.BinaryCrossentropy(
+    from_logits=<span class="hljs-keyword">False</span>, label_smoothing=<span class="hljs-number">0</span>, reduction=losses_utils.ReductionV2.AUTO,
+    name=<span class="hljs-string">&apos;binary_crossentropy&apos;</span>
+)
+</code></pre>
+<pre><code class="lang-from_logits```&#x7684;&#x4F5C;&#x7528;&#xFF1A;&#x6A21;&#x578B;&#x7684;&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#x6CA1;&#x6709;&#x901A;&#x8FC7;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#x65F6;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x4F7F;&#x5F97;```from_logits=True```&#xFF1B;&#x53CD;&#x4E4B;&#xFF0C;&#x5982;&#x679C;&#x6A21;&#x578B;&#x7684;&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#x901A;&#x8FC7;&#x6FC0;&#x6D3B;&#x51FD;&#x6570;&#x540E;&#xFF0C;&#x5219;&#x9700;&#x8981;&#x4F7F;&#x5F97;```from_logits=False```&#x3002;">
+&#x539F;&#x7406;&#x662F;&#x4EC0;&#x4E48;&#x5462;&#xFF1F;&#x5F53;&#x4F60;&#x6253;&#x5F00;tensorflow&#x7684;&#x6E90;&#x7801;&#x65F6;&#xFF0C;&#x4E00;&#x5207;&#x90FD;&#x660E;&#x767D;&#x4E86;&#xFF01;
+
+&#x4E0B;&#x9762;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x6765;&#x6E90;&#x4E8E;https://github.com/tensorflow/tensorflow/blob/64c3d382cadf7bbe8e7e99884bede8284ff67f56/tensorflow/python/keras/backend.py#L4559
+
+```if not from_logits:```&#x8FD9;&#x4E2A;&#x5224;&#x65AD;&#x8BED;&#x53E5;&#x540E;&#xFF0C;&#x5219;&#x4F1A;&#x76F4;&#x63A5;&#x9636;&#x6BB5;bce (binary_crossentropy)&#xFF1B;&#x53CD;&#x4E4B;&#xFF0C;&#x5219;&#x4F1A;&#x8BA1;&#x7B97;```nn.sigmoid_cross_entropy_with_logits```&#x3002;
+
+```python
+def binary_crossentropy(target, output, from_logits=False):
+  &quot;&quot;&quot;Binary crossentropy between an output tensor and a target tensor.
+  Arguments:
+      target: A tensor with the same shape as `output`.
+      output: A tensor.
+      from_logits: Whether `output` is expected to be a logits tensor.
+          By default, we consider that `output`
+          encodes a probability distribution.
+  Returns:
+      A tensor.
+  &quot;&quot;&quot;
+  if not from_logits:
+    if (isinstance(output, (ops.EagerTensor, variables_module.Variable)) or
+        output.op.type != &apos;Sigmoid&apos;):
+      epsilon_ = _constant_to_tensor(epsilon(), output.dtype.base_dtype)
+      output = clip_ops.clip_by_value(output, epsilon_, 1. - epsilon_)
+
+      # Compute cross entropy from probabilities.
+      bce = target * math_ops.log(output + epsilon())
+      bce += (1 - target) * math_ops.log(1 - output + epsilon())
+      return -bce
+    else:
+      # When sigmoid activation function is used for output operation, we
+      # use logits from the sigmoid function directly to compute loss in order
+      # to prevent collapsing zero when training.
+      assert len(output.op.inputs) == 1
+      output = output.op.inputs[0]
+  return nn.sigmoid_cross_entropy_with_logits(labels=target, logits=output)
+</code></pre>
+<p>&#x4E0B;&#x9762;&#x6211;&#x4EEC;&#x518D;&#x5206;&#x6790;&#x4E0B;<code>nn.sigmoid_cross_entropy_with_logits</code>:</p>
+<p>&#x4E0B;&#x9762;&#x4EE3;&#x7801;&#x6765;&#x6E90;&#x4E8E; <a href="https://github.com/tensorflow/tensorflow/blob/64c3d382cadf7bbe8e7e99884bede8284ff67f56/tensorflow/python/ops/nn_impl.py#L112" target="_blank">https://github.com/tensorflow/tensorflow/blob/64c3d382cadf7bbe8e7e99884bede8284ff67f56/tensorflow/python/ops/nn_impl.py#L112</a></p>
+<p>&#x63A8;&#x5BFC;&#x8FC7;&#x7A0B;&#x5982;&#x4E0B;&#x6240;&#x793A;&#xFF1A;</p>
+<pre><code class="lang-reStructuredText"> For brevity, let `x = logits`, `z = labels`.  The logistic loss is
+        z * -log(sigmoid(x)) + (1 - z) * -log(1 - sigmoid(x))
+      = z * -log(1 / (1 + exp(-x))) + (1 - z) * -log(exp(-x) / (1 + exp(-x)))
+      = z * log(1 + exp(-x)) + (1 - z) * (-log(exp(-x)) + log(1 + exp(-x)))
+      = z * log(1 + exp(-x)) + (1 - z) * (x + log(1 + exp(-x))
+      = (1 - z) * x + log(1 + exp(-x))
+      = x - x * z + log(1 + exp(-x))
+  For x &lt; 0, to avoid overflow in exp(-x), we reformulate the above
+        x - x * z + log(1 + exp(-x))
+      = log(exp(x)) - x * z + log(1 + exp(-x))
+      = - x * z + log(1 + exp(x))
+  Hence, to ensure stability and avoid overflow, the implementation uses this
+  equivalent formulation
+      max(x, 0) - x * z + log(1 + exp(-abs(x)))
+  `logits` and `labels` must have the same type and shape.
+</code></pre>
+<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sigmoid_cross_entropy_with_logits</span><span class="hljs-params">(  # pylint: disable=invalid-name
+    _sentinel=None,
+    labels=None,
+    logits=None,
+    name=None)</span>:</span>
+  <span class="hljs-string">&quot;&quot;&quot;Computes sigmoid cross entropy given `logits`.
+  Measures the probability error in discrete classification tasks in which each
+  class is independent and not mutually exclusive.  For instance, one could
+  perform multilabel classification where a picture can contain both an elephant
+  and a dog at the same time.
+  For brevity, let `x = logits`, `z = labels`.  The logistic loss is
+        z * -log(sigmoid(x)) + (1 - z) * -log(1 - sigmoid(x))
+      = z * -log(1 / (1 + exp(-x))) + (1 - z) * -log(exp(-x) / (1 + exp(-x)))
+      = z * log(1 + exp(-x)) + (1 - z) * (-log(exp(-x)) + log(1 + exp(-x)))
+      = z * log(1 + exp(-x)) + (1 - z) * (x + log(1 + exp(-x))
+      = (1 - z) * x + log(1 + exp(-x))
+      = x - x * z + log(1 + exp(-x))
+  For x &lt; 0, to avoid overflow in exp(-x), we reformulate the above
+        x - x * z + log(1 + exp(-x))
+      = log(exp(x)) - x * z + log(1 + exp(-x))
+      = - x * z + log(1 + exp(x))
+  Hence, to ensure stability and avoid overflow, the implementation uses this
+  equivalent formulation
+      max(x, 0) - x * z + log(1 + exp(-abs(x)))
+  `logits` and `labels` must have the same type and shape.
+  Args:
+    _sentinel: Used to prevent positional parameters. Internal, do not use.
+    labels: A `Tensor` of the same type and shape as `logits`.
+    logits: A `Tensor` of type `float32` or `float64`.
+    name: A name for the operation (optional).
+  Returns:
+    A `Tensor` of the same shape as `logits` with the componentwise
+    logistic losses.
+  Raises:
+    ValueError: If `logits` and `labels` do not have the same shape.
+  &quot;&quot;&quot;</span>
+  <span class="hljs-comment"># pylint: disable=protected-access</span>
+  nn_ops._ensure_xent_args(<span class="hljs-string">&quot;sigmoid_cross_entropy_with_logits&quot;</span>, _sentinel,
+                           labels, logits)
+  <span class="hljs-comment"># pylint: enable=protected-access</span>
+
+  <span class="hljs-keyword">with</span> ops.name_scope(name, <span class="hljs-string">&quot;logistic_loss&quot;</span>, [logits, labels]) <span class="hljs-keyword">as</span> name:
+    logits = ops.convert_to_tensor(logits, name=<span class="hljs-string">&quot;logits&quot;</span>)
+    labels = ops.convert_to_tensor(labels, name=<span class="hljs-string">&quot;labels&quot;</span>)
+    <span class="hljs-keyword">try</span>:
+      labels.get_shape().merge_with(logits.get_shape())
+    <span class="hljs-keyword">except</span> ValueError:
+      <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">&quot;logits and labels must have the same shape (%s vs %s)&quot;</span> %
+                       (logits.get_shape(), labels.get_shape()))
+
+    <span class="hljs-comment"># The logistic loss formula from above is</span>
+    <span class="hljs-comment">#   x - x * z + log(1 + exp(-x))</span>
+    <span class="hljs-comment"># For x &lt; 0, a more numerically stable formula is</span>
+    <span class="hljs-comment">#   -x * z + log(1 + exp(x))</span>
+    <span class="hljs-comment"># Note that these two expressions can be combined into the following:</span>
+    <span class="hljs-comment">#   max(x, 0) - x * z + log(1 + exp(-abs(x)))</span>
+    <span class="hljs-comment"># To allow computing gradients at zero, we define custom versions of max and</span>
+    <span class="hljs-comment"># abs functions.</span>
+    zeros = array_ops.zeros_like(logits, dtype=logits.dtype)
+    cond = (logits &gt;= zeros)
+    relu_logits = array_ops.where(cond, logits, zeros)
+    neg_abs_logits = array_ops.where(cond, -logits, logits)
+    <span class="hljs-keyword">return</span> math_ops.add(
+        relu_logits - logits * labels,
+        math_ops.log1p(math_ops.exp(neg_abs_logits)),
+        name=name)
+</code></pre>
+
                                 
                                 </section>
                             
@@ -740,7 +868,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"3.2 损失函数及自定义损失函数","level":"1.4.2","depth":2,"next":{"title":"3.3 优化器及自定义优化器","level":"1.4.3","depth":2,"path":"ch3/优化器及自定义优化器.md","ref":"ch3/优化器及自定义优化器.md","articles":[]},"previous":{"title":"3.1 自定义模型层","level":"1.4.1","depth":2,"path":"ch3/自定义模型层.md","ref":"ch3/自定义模型层.md","articles":[]},"dir":"neutral"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ch3/损失函数及自定义损失函数.md","mtime":"2020-06-03T05:08:58.571Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-10T04:55:21.956Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"3.2 损失函数及自定义损失函数","level":"1.4.2","depth":2,"next":{"title":"3.3 优化器及自定义优化器","level":"1.4.3","depth":2,"path":"ch3/优化器及自定义优化器.md","ref":"ch3/优化器及自定义优化器.md","articles":[]},"previous":{"title":"3.1 自定义模型层","level":"1.4.1","depth":2,"path":"ch3/自定义模型层.md","ref":"ch3/自定义模型层.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ch3/损失函数及自定义损失函数.md","mtime":"2020-06-11T02:10:16.897Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-06-11T02:11:28.737Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
