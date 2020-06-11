@@ -5,7 +5,7 @@
 =======
 # Table of contents
 
-* [Tensorflow\_2.0](README.md)
+* [Tensorflow 2.0 实战笔记](README.md)
 
 * [第一章 偶遇Tensorflow 2.0]()
 
