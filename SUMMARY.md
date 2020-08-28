@@ -45,8 +45,10 @@
     * [6.3-实战四：LSTM实现新闻分类算法](ch6/6.3-实战四：LSTM实现新闻分类算法.md)
 
 -----
-* 第七章 遇见Transorformer
+* 第七章 Transorformer网络
+  * [7.1-Transfromer原理详解](ch7/7.1-Transfomer原理详解.md)
+  * [7.2-实战五：Transformer实现英译中机器翻译](ch7/7.2-实战五：Transformer实现英译中机器翻译.md)
 * 第八章 tf.hub初探
-* 第九章 Tensorflow部署
+* 第九章 Tensorflo7部署
 * 第九章 相许Tensorflow
 

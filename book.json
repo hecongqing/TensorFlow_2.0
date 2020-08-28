@@ -8,5 +8,6 @@
     "root": ".",
     "structure": {
         "readme": "README.md"
-    }
+    },
+    "plugins": ["mathjax"]
 }
