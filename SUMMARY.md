@@ -24,8 +24,6 @@
     * [3.5 激活函数及自定义激活函数](ch3/3.5 激活函数及自定义激活函数.md)
     * [3.6 Tensorboard使用](ch3/3.6 Tensorboard使用.md)
     * [注意](ch3/3.7 注意.md)
-
------
 * 第四章 Tensorflow数据管道
     * [4.1 tf.data简介](ch4/tf.data简介.md)
     * [4.2 Dataset使用](ch4/Dataset使用.md)
@@ -37,14 +35,10 @@
     * [5.3 拆解池化层](ch5/拆解池化层.md)
     * [5.4 实战三：Quick, Draw! Google涂鸦识别挑战项目](ch5/实战1.md)
     * [注意](ch4/注意.md)
-
------
 * 第六章 循环神经网络
     * [6.1-浅谈循环神经网络](ch6/6.1-浅谈循环神经网络.md)
     * [6.2-word2vec简介及词向量构建](ch6/6.2-word2vec简介及词向量构建.md)
     * [6.3-实战四：LSTM实现新闻分类算法](ch6/6.3-实战四：LSTM实现新闻分类算法.md)
-
------
 * 第七章 Transorformer网络
   * [7.1-Transfromer原理详解](ch7/7.1-Transfomer原理详解.md)
   * [7.2-实战五：Transformer实现英译中机器翻译](ch7/7.2-实战五：Transformer实现英译中机器翻译.md)
