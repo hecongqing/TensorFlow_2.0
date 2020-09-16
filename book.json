@@ -1,0 +1,14 @@
+{
+    "title": "Tensorflow 2.0实战笔记",
+    "description": "记录Tensorflow 2.0遇到的坑",
+    "author": "hecongqing",
+    "output.name": "site",
+    "language": "zh-hans",
+    "gitbook": "3.2.3",
+    "root": ".",
+    "structure": {
+        "readme": "README.md"
+    },
+    "plugins": ["mathjax"],
+    "pluginsConfig": { "prism": { "css": [ "prismjs/themes/prism-solarizedlight.css" ] } }
+}
